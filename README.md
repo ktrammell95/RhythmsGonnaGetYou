@@ -59,4 +59,6 @@ Notes:
 ### Algorithm
 
 Create classes for each table
+Create Context
+Connect to tables
 Link tables together
