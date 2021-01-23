@@ -10,10 +10,15 @@ namespace RhythmsGonnaGetYou
             var context = new MusicContext();
 
             var bands = context.Bands;
+            var albums = context.Albums;
 
             var bandCount = bands.Count();
+            var albumCount = albums.Count();
+
 
             Console.WriteLine($"There are {bandCount} bands");
+            Console.WriteLine($"There are {albumCount} albums");
+
         }
     }
 }
