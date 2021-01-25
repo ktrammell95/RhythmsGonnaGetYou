@@ -43,6 +43,7 @@ namespace RhythmsGonnaGetYou
 
                 Console.WriteLine("ADD - Add a New Band");
                 Console.WriteLine("View - View a list of ALL Bands");
+                Console.WriteLine("Search - View a list of ALL Bands");
                 Console.WriteLine();
 
                 Console.Write("Make a selection from our menu options: ");
@@ -105,12 +106,71 @@ namespace RhythmsGonnaGetYou
                 }
                 if (bandSelection == "VIEW")
                 {
-
                     foreach (var band in context.Bands)
                     {
                         Console.WriteLine($"{band.Name}");
 
                     }
+                }
+                if (bandSelection == "SEARCH")
+                {
+                    Console.WriteLine("Name");
+                    // Console.WriteLine("Country of Origin");
+                    // Console.WriteLine("Number of Members");
+                    // Console.WriteLine("Style");
+                    Console.WriteLine("Signed");
+                    Console.WriteLine("Not Signed");
+                    // Console.WriteLine("Contact Name");
+                    Console.WriteLine();
+
+                    Console.Write("What would you like to search by? ");
+                    var bandSearchSelection = Console.ReadLine().ToUpper().Trim();
+
+                    if (bandSearchSelection == "NAME")
+                    {
+                        Console.Write("What is the Band Name you would like to search for? ");
+                        var bandNameSearch = Console.ReadLine();
+
+                        var bandToFind = context.Bands.FirstOrDefault(band => band.Name == bandNameSearch);
+
+                        if (bandToFind == null)
+                        {
+                            Console.WriteLine("Couldn't find the movie. Uh oh!");
+                            Console.WriteLine();
+                            Console.WriteLine("-----------------------");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{bandToFind.Name}");
+                            Console.WriteLine();
+
+                            Console.WriteLine("-----------------------");
+                        }
+                    }
+                    if (bandSearchSelection == "SIGNED")
+                    {
+                        var signedBands = context.Bands.Where(band => band.IsSigned == true);
+                        foreach (var band in signedBands)
+                        {
+                            Console.WriteLine($"{band.Name} has been signed");
+
+                        }
+                        Console.WriteLine();
+
+                        Console.WriteLine("-----------------------");
+                    };
+                    if (bandSearchSelection == "NOT SIGNED")
+                    {
+                        var signedBands = context.Bands.Where(band => band.IsSigned == false);
+                        foreach (var band in signedBands)
+                        {
+                            Console.WriteLine($"{band.Name} has NOT been signed");
+
+                        }
+                        Console.WriteLine();
+
+                        Console.WriteLine("-----------------------");
+                    };
                 }
             }
 
