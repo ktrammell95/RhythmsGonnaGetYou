@@ -18,20 +18,21 @@ namespace RhythmsGonnaGetYou
             var songCount = songs.Count();
             var albumCount = albums.Count();
 
-            Console.WriteLine($"There are {bandCount} bands");
-            Console.WriteLine($"There are {songCount} songs");
-            Console.WriteLine($"There are {albumCount} albums");
-
             var userHasChosenToQuit = false;
             while (userHasChosenToQuit == false)
             {
+                Console.WriteLine("****************************************");
+                Console.WriteLine();
+                Console.WriteLine($"There are {bandCount} bands");
+                Console.WriteLine($"There are {songCount} songs");
+                Console.WriteLine($"There are {albumCount} albums");
                 Console.WriteLine();
                 Console.WriteLine("****************************************");
                 Console.WriteLine();
 
                 Console.WriteLine("ALBUMS - Add, Update, or View Bands");
                 Console.WriteLine("BANDS - Add, Update, or View Bands");
-                Console.WriteLine("Songs - Add, Update, or View Songs");
+                Console.WriteLine("SONGS - Add, Update, or View Songs");
                 Console.WriteLine("QUIT - Leave the program");
                 Console.WriteLine();
 
@@ -41,8 +42,8 @@ namespace RhythmsGonnaGetYou
 
                 if (selection == "BANDS")
                 {
-
                     Console.WriteLine("ADD - Add a New Band");
+                    Console.WriteLine("UPDATE - Update Band Information");
                     Console.WriteLine("View - View a list of ALL Bands");
                     Console.WriteLine("Search - View a list of ALL Bands");
                     Console.WriteLine();
@@ -53,40 +54,51 @@ namespace RhythmsGonnaGetYou
                     switch (bandSelection)
                     {
                         case "ADD":
-                            Console.WriteLine("What Band would you like to add?");
+                            Console.Write("What Band would you like to add?  ");
                             var newBandName = Console.ReadLine();
                             Console.WriteLine();
 
-                            Console.WriteLine("What Country is the Band from?");
+                            Console.Write("What Country is the Band from?  ");
                             var newCountryOfOrigin = Console.ReadLine();
                             Console.WriteLine();
 
-                            Console.WriteLine("How many Members are in the Band?");
+                            Console.Write("How many Members are in the Band?  ");
                             var newNumberOfMembersString = Console.ReadLine();
                             var newNumberOfMembers = int.Parse(newNumberOfMembersString);
                             Console.WriteLine();
 
-                            Console.WriteLine("What is the link for the Band's Website?");
+                            Console.Write("What is the link for the Band's Website?  ");
                             var newWebsite = Console.ReadLine();
                             Console.WriteLine();
 
-                            Console.WriteLine("What Style of music does the Band play?");
+                            Console.Write("What Style of music does the Band play? ");
                             var newStyle = Console.ReadLine();
                             Console.WriteLine();
 
-                            Console.WriteLine("Is the Band Signed with a label? (True for Yes, False for No)");
+                            Console.Write("Is the Band Signed with a label?  ");
                             var newIsSignedString = Console.ReadLine().ToUpper().Trim();
+                            switch (newIsSignedString)
+                            {
+                                case "YES":
+                                    newIsSignedString = "TRUE";
+                                    break;
+                                case "NO":
+                                    newIsSignedString = "FALSE";
+                                    break;
+                            }
+
                             var newIsSignedConvert = bool.Parse(newIsSignedString);
+
 
                             // Need to add something for if they enter Yes/No
 
-                            Console.WriteLine("What is the Full Name of the Contact for the Band?");
+                            Console.Write("What is the Full Name of the Contact for the Band?  ");
                             var newContactName = Console.ReadLine();
                             Console.WriteLine();
 
                             // Need to fix phone number so you can enter 10 digits
 
-                            Console.WriteLine("What is the Phone Number for the Contact for the Band?");
+                            Console.Write("What is the Phone Number for the Contact for the Band?  ");
                             var newContactPhoneNumberString = Console.ReadLine();
                             var newContactPhoneNumber = char.Parse(newContactPhoneNumberString);
                             Console.WriteLine();
@@ -104,6 +116,56 @@ namespace RhythmsGonnaGetYou
                             };
                             context.Bands.Add(newBand);
                             context.SaveChanges();
+                            break;
+
+                        case "UPDATE":
+                            Console.Write("What is the Band you would like to Update?  ");
+                            var nameOfBandToUpdate = Console.ReadLine();
+                            var existingBandToUpdate = context.Bands.FirstOrDefault(band => band.Name == nameOfBandToUpdate);
+
+                            if (existingBandToUpdate != null)
+                            {
+                                Console.Write("What is the new Band Name?  ");
+                                existingBandToUpdate.Name = Console.ReadLine();
+
+                                Console.Write("How many Members are in the Band?  ");
+                                var updateNumberOfMembersString = Console.ReadLine();
+                                var updateNumberOfMembers = int.Parse(updateNumberOfMembersString);
+                                existingBandToUpdate.NumberOfMembers = updateNumberOfMembers;
+
+                                Console.Write("What is the link for the Band's Website?  ");
+                                existingBandToUpdate.Website = Console.ReadLine();
+
+                                Console.Write("What Style of music does the Band play?  ");
+                                existingBandToUpdate.Style = Console.ReadLine();
+
+                                Console.Write("Is the Band Signed with a label?  ");
+                                var updateIsSignedString = Console.ReadLine().ToUpper().Trim();
+                                switch (updateIsSignedString)
+                                {
+                                    case "YES":
+                                        updateIsSignedString = "TRUE";
+                                        break;
+                                    case "NO":
+                                        updateIsSignedString = "FALSE";
+                                        break;
+                                }
+                                existingBandToUpdate.IsSigned = bool.Parse(updateIsSignedString);
+
+                                // Need to add something for if they enter Yes/No
+                                Console.Write("What is the Full Name of the Contact for the Band?  ");
+                                existingBandToUpdate.ContactName = Console.ReadLine();
+
+                                // Need to fix phone number so you can enter 10 digits
+
+                                Console.Write("What is the Phone Number for the Contact for the Band?  ");
+                                var updateContactPhoneNumberString = Console.ReadLine();
+                                existingBandToUpdate.ContactPhoneNumber = char.Parse(updateContactPhoneNumberString);
+
+                                context.SaveChanges();
+                            }
+
+                            Console.WriteLine();
                             break;
 
                         case "VIEW":
@@ -125,7 +187,7 @@ namespace RhythmsGonnaGetYou
                             Console.Write("What would you like to search by? ");
                             var bandSearchSelection = Console.ReadLine().ToUpper().Trim();
 
-                            switch (bandSelection)
+                            switch (bandSearchSelection)
                             {
                                 case "NAME":
 
@@ -144,7 +206,6 @@ namespace RhythmsGonnaGetYou
                                     {
                                         Console.WriteLine($"{bandToFind.Name}");
                                         Console.WriteLine();
-
                                         Console.WriteLine("-----------------------");
                                     }
                                     break;
@@ -156,7 +217,6 @@ namespace RhythmsGonnaGetYou
 
                                     }
                                     Console.WriteLine();
-
                                     Console.WriteLine("-----------------------");
                                     break;
 
@@ -194,11 +254,11 @@ namespace RhythmsGonnaGetYou
                     switch (albumSelection)
                     {
                         case "ADD":
-                            Console.WriteLine("What is the Album Title?");
+                            Console.Write("What is the Album Title?  ");
                             var newAlbumTitle = Console.ReadLine();
                             Console.WriteLine();
 
-                            Console.WriteLine("Is the Album Explicit?");
+                            Console.Write("Is the Album Explicit?  ");
                             var newIsExplicitString = Console.ReadLine().ToUpper().Trim();
                             switch (newIsExplicitString)
                             {
@@ -212,12 +272,12 @@ namespace RhythmsGonnaGetYou
                             var newIsExplicit = bool.Parse(newIsExplicitString);
                             Console.WriteLine();
 
-                            Console.WriteLine("What date was the Album Released on?");
+                            Console.Write("What date was the Album Released on?  ");
                             var newReleaseDateString = Console.ReadLine().ToUpper().Trim();
                             var newReleaseDate = DateTime.Parse(newReleaseDateString);
                             Console.WriteLine();
 
-                            Console.WriteLine("What Band does the Album belong to?");
+                            Console.Write("What Band does the Album belong to?  ");
                             var bandNameToFindResponse = Console.ReadLine();
                             var bandNameToFind = context.Bands.FirstOrDefault(band => band.Name == bandNameToFindResponse);
                             var newBandId = bandNameToFind.Id;
@@ -264,11 +324,11 @@ namespace RhythmsGonnaGetYou
                     switch (songSelection)
                     {
                         case "ADD":
-                            Console.WriteLine("What is the Song Title?");
+                            Console.Write("What is the Song Title?  ");
                             var newSongTitle = Console.ReadLine();
                             Console.WriteLine();
 
-                            Console.WriteLine("What Album does the Song belong to?");
+                            Console.Write("What Album does the Song belong to?  ");
                             var albumTitleToFindResponse = Console.ReadLine();
                             var albumTitleToFind = context.Albums.FirstOrDefault(album => album.Title == albumTitleToFindResponse);
                             var newAlbumId = albumTitleToFind.Id;
@@ -286,12 +346,12 @@ namespace RhythmsGonnaGetYou
                                 Console.WriteLine("-----------------------");
                             }
 
-                            Console.WriteLine("What is the Song's Track number?");
+                            Console.Write("What is the Song's Track number?  ");
                             var newSongTrackNumberString = Console.ReadLine();
                             var newSongTrackNumber = int.Parse(newSongTrackNumberString);
                             Console.WriteLine();
 
-                            Console.WriteLine("How long is the song (in seconds)?");
+                            Console.Write("How long is the song (in seconds)?  ");
                             var newSongDurationString = Console.ReadLine();
                             var newSongDuration = int.Parse(newSongDurationString);
                             Console.WriteLine();
