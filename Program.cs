@@ -246,8 +246,7 @@ namespace RhythmsGonnaGetYou
                 if (selection == "ALBUMS")
                 {
                     Console.WriteLine("ADD - Add a New Album");
-                    // Console.WriteLine("View - View a list of ALL Albums");
-                    // Console.WriteLine("Search - View a list of ALL Albums");
+                    Console.WriteLine("View - View a list of Albums by Release Date");
                     Console.WriteLine();
 
                     Console.Write("Make a selection from our menu options: ");
@@ -262,6 +261,7 @@ namespace RhythmsGonnaGetYou
 
                             Console.Write("Is the Album Explicit?  ");
                             var newIsExplicitString = Console.ReadLine().ToUpper().Trim();
+
                             switch (newIsExplicitString)
                             {
                                 case "YES":
@@ -271,6 +271,7 @@ namespace RhythmsGonnaGetYou
                                     newIsExplicitString = "FALSE";
                                     break;
                             }
+
                             var newIsExplicit = bool.Parse(newIsExplicitString);
                             Console.WriteLine();
 
@@ -283,6 +284,7 @@ namespace RhythmsGonnaGetYou
                             var bandNameToFindResponse = Console.ReadLine();
                             var bandNameToFind = context.Bands.FirstOrDefault(band => band.Name == bandNameToFindResponse);
                             var newBandId = bandNameToFind.Id;
+
                             if (bandNameToFind == null)
                             {
                                 Console.WriteLine("Sorry this band doesn't exist.");
@@ -293,12 +295,10 @@ namespace RhythmsGonnaGetYou
                             {
                                 Console.WriteLine($"{bandNameToFindResponse}");
                                 Console.WriteLine();
-
                                 Console.WriteLine("-----------------------");
                             }
 
                             Console.WriteLine();
-
 
                             var newAlbum = new Album()
                             {
@@ -309,6 +309,15 @@ namespace RhythmsGonnaGetYou
                             };
                             context.Albums.Add(newAlbum);
                             context.SaveChanges();
+                            break;
+                        case "VIEW":
+
+                            foreach (var album in context.Albums)
+                            {
+                                Console.WriteLine($"{album.Title} was released on {album.ReleaseDate}");
+                                Console.WriteLine();
+                                Console.WriteLine("-----------------------");
+                            }
                             break;
                     }
 
