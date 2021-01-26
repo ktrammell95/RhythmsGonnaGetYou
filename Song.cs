@@ -10,8 +10,7 @@ namespace RhythmsGonnaGetYou
         public int AlbumId { get; set; }
         public Album Album { get; set; }
 
-        // public int BandId { get; set; }
-        // public Band Band { get; set; }
+
 
     }
 }
