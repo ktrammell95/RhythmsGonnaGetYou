@@ -21,14 +21,6 @@ namespace RhythmsGonnaGetYou
             var userHasChosenToQuit = false;
             while (userHasChosenToQuit == false)
             {
-                Console.WriteLine("****************************************");
-                Console.WriteLine();
-                Console.WriteLine($"There are {bandCount} bands");
-                Console.WriteLine($"There are {songCount} songs");
-                Console.WriteLine($"There are {albumCount} albums");
-                Console.WriteLine();
-                Console.WriteLine("****************************************");
-                Console.WriteLine();
 
                 Console.WriteLine("ALBUMS - Add, Update, or View Bands");
                 Console.WriteLine("BANDS - Add, Update, or View Bands");
@@ -44,8 +36,8 @@ namespace RhythmsGonnaGetYou
                 {
                     Console.WriteLine("ADD - Add a New Band");
                     Console.WriteLine("UPDATE - Update Band Information");
-                    Console.WriteLine("View - View a list of ALL Bands");
-                    Console.WriteLine("Search - View a list of ALL Bands");
+                    Console.WriteLine("View - View ALL Bands");
+                    Console.WriteLine("Search - View for a Band and their Albums");
                     Console.WriteLine();
 
                     Console.Write("Make a selection from our menu options: ");
@@ -195,16 +187,26 @@ namespace RhythmsGonnaGetYou
                                     var bandNameSearch = Console.ReadLine();
 
                                     var bandToFind = context.Bands.FirstOrDefault(band => band.Name == bandNameSearch);
+                                    var bandToFindId = bandToFind.Id;
+
 
                                     if (bandToFind == null)
                                     {
-                                        Console.WriteLine("Couldn't find the movie. Uh oh!");
+                                        Console.WriteLine("Couldn't find the Band. Uh oh!");
                                         Console.WriteLine();
                                         Console.WriteLine("-----------------------");
                                     }
                                     else
                                     {
-                                        Console.WriteLine($"{bandToFind.Name}");
+                                        var albumsToShow = context.Albums.Where(album => album.BandId == bandToFindId);
+                                        var albumTitles = albumsToShow.Select(album => album.Title);
+
+                                        foreach (var album in albumTitles)
+                                        {
+                                            Console.WriteLine();
+                                            Console.WriteLine($"Album: {album} belongs to the band {bandToFind.Name}");
+
+                                        }
                                         Console.WriteLine();
                                         Console.WriteLine("-----------------------");
                                     }
