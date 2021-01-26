@@ -31,7 +31,7 @@ namespace RhythmsGonnaGetYou
 
                 Console.WriteLine("ALBUMS - Add, Update, or View Bands");
                 Console.WriteLine("BANDS - Add, Update, or View Bands");
-                Console.WriteLine("BANDS - Add, Update, or View Bands");
+                Console.WriteLine("Songs - Add, Update, or View Songs");
                 Console.WriteLine("QUIT - Leave the program");
                 Console.WriteLine();
 
@@ -183,10 +183,9 @@ namespace RhythmsGonnaGetYou
                 }
                 if (selection == "ALBUMS")
                 {
-
                     Console.WriteLine("ADD - Add a New Album");
-                    Console.WriteLine("View - View a list of ALL Albums");
-                    Console.WriteLine("Search - View a list of ALL Albums");
+                    // Console.WriteLine("View - View a list of ALL Albums");
+                    // Console.WriteLine("Search - View a list of ALL Albums");
                     Console.WriteLine();
 
                     Console.Write("Make a selection from our menu options: ");
@@ -247,6 +246,64 @@ namespace RhythmsGonnaGetYou
                                 BandId = newBandId,
                             };
                             context.Albums.Add(newAlbum);
+                            context.SaveChanges();
+                            break;
+                    }
+
+                }
+                if (selection == "SONGS")
+                {
+                    Console.WriteLine("ADD - Add a New Song");
+                    // Console.WriteLine("View - View a list of ALL Albums");
+                    // Console.WriteLine("Search - View a list of ALL Albums");
+                    Console.WriteLine();
+
+                    Console.Write("Make a selection from our menu options: ");
+                    var songSelection = Console.ReadLine().ToUpper().Trim();
+
+                    switch (songSelection)
+                    {
+                        case "ADD":
+                            Console.WriteLine("What is the Song Title?");
+                            var newSongTitle = Console.ReadLine();
+                            Console.WriteLine();
+
+                            Console.WriteLine("What Album does the Song belong to?");
+                            var albumTitleToFindResponse = Console.ReadLine();
+                            var albumTitleToFind = context.Albums.FirstOrDefault(album => album.Title == albumTitleToFindResponse);
+                            var newAlbumId = albumTitleToFind.Id;
+                            if (albumTitleToFind == null)
+                            {
+                                Console.WriteLine("Sorry this band doesn't exist.");
+                                Console.WriteLine();
+                                Console.WriteLine("-----------------------");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{albumTitleToFindResponse}");
+                                Console.WriteLine();
+
+                                Console.WriteLine("-----------------------");
+                            }
+
+                            Console.WriteLine("What is the Song's Track number?");
+                            var newSongTrackNumberString = Console.ReadLine();
+                            var newSongTrackNumber = int.Parse(newSongTrackNumberString);
+                            Console.WriteLine();
+
+                            Console.WriteLine("How long is the song (in seconds)?");
+                            var newSongDurationString = Console.ReadLine();
+                            var newSongDuration = int.Parse(newSongDurationString);
+                            Console.WriteLine();
+
+                            var newSong = new Song()
+                            {
+                                Title = newSongTitle,
+                                AlbumId = newAlbumId,
+                                TrackNumber = newSongTrackNumber,
+                                Duration = newSongDuration,
+                            };
+                            context.Songs.Add(newSong);
                             context.SaveChanges();
                             break;
                     }
